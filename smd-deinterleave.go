@@ -47,7 +47,7 @@ func main() {
 
 	input, err := os.Open(os.Args[1])
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Open input: %s\n", err)
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(-1)
 	}
 	defer input.Close()
@@ -55,7 +55,8 @@ func main() {
 	header_buffer := make([]byte, 11)
 	_, err = input.Read(header_buffer)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Read header: %s\n", err)
+		// TODO: need to handle the count too
+		fmt.Fprintf(os.Stderr, "Read header: %v\n", err)
 		os.Exit(-1)
 	}
 
@@ -72,13 +73,14 @@ func main() {
 
 	_, err = input.Seek(512, 0)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Seek input: %s\n", err)
+		// TODO: need to handle the count too
+		fmt.Fprintf(os.Stderr, "Seek input: %v\n", err)
 		os.Exit(-1)
 	}
 
 	output, err := os.Create(os.Args[2])
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Create output: %s\n", err)
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(-1)
 	}
 	defer output.Close()
@@ -89,7 +91,8 @@ func main() {
 	for i := byte(0); i < header.size_of_file; i++ {
 		_, err := input.Read(inputBuffer[:])
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Read chunk: %s\n", err)
+			// TODO: need to handle the count too?
+			fmt.Fprintf(os.Stderr, "Read chunk: %v\n", err)
 			os.Exit(-1)
 		}
 
@@ -100,7 +103,8 @@ func main() {
 
 		_, err = output.Write(outputBuffer[:])
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Write chunk: %s\n", err)
+			// TODO: need to handle the count too?
+			fmt.Fprintf(os.Stderr, "Write chunk: %v\n", err)
 			os.Exit(-1)
 		}
 	}
